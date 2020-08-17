@@ -1,0 +1,29 @@
+{
+  "name": "api-cidades-estados",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fscfelipe/api-cidades-estados.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "express",
+    "json"
+  ],
+  "author": "Felipe S. Cassimiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fscfelipe/api-cidades-estados/issues"
+  },
+  "homepage": "https://github.com/fscfelipe/api-cidades-estados#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "type": "module"
+}
