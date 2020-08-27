@@ -21,4 +21,16 @@ async function createFiles() {
   }
 }
 
-createFiles();
+async function getQuantidadeCidades(estado) {
+  const dados = await fs.readFile(
+    `./arquivos/cidadesPorEstado/${estado}.json`,
+    'utf8'
+  );
+
+  const estadoJson = JSON.parse(dados);
+
+  return estadoJson.length;
+}
+
+//createFiles();
+getQuantidadeCidades('CE');
