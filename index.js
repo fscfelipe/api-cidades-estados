@@ -1,21 +1,24 @@
-import express from 'express';
-
-import fs from 'fs';
-
-const app = express();
-const PORT = 3000;
+import { promises as fs } from 'fs';
 
 // Lendo arquivo de estados
+async function createFiles() {
+  let estados = await fs.readFile('./arquivos/Estados.json', 'utf8');
+  const estadosJson = JSON.parse(estados);
 
-fs.readFile('./arquivos/Estados.json', 'utf8', (err, data) => {
-  let json = JSON.parse(data);
-  console.log(json);
-});
+  let cidades = await fs.readFile('./arquivos/Cidades.json', 'utf8');
+  const cidadesJson = JSON.parse(cidades);
 
-app.get('/', (req, res) => {
-  res.send('API funcionando!');
-});
+  // Criando um arquivo para cada estados e suas cidades
+  for (const estado of estadosJson) {
+    const cidadesPorEstado = cidadesJson.filter((cidade) => {
+      return cidade.Estado === estado.ID;
+    });
 
-app.listen(PORT, () => {
-  console.log(`API funcionando na porta ${PORT}`);
-});
+    await fs.writeFile(
+      `./arquivos/cidadesPorEstado/${estado.Sigla}.json`,
+      JSON.stringify(cidadesPorEstado)
+    );
+  }
+}
+
+createFiles();
