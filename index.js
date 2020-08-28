@@ -51,6 +51,42 @@ async function getEstadosComMaisCidades(order) {
   return lista;
 }
 
+async function listaCidadesMaiorNomePorEstado() {
+  let estados = await fs.readFile('./arquivos/Estados.json', 'utf8');
+  estados = JSON.parse(estados);
+
+  let lista = [];
+
+  for (const estado of estados) {
+    let maiorCidade = await getMaiorNomeCidadesPorEstado(estado.Sigla);
+
+    lista.push({
+      uf: estado.Sigla,
+      cidade: maiorCidade,
+    });
+  }
+
+  return lista;
+}
+
+async function getMaiorNomeCidadesPorEstado(estado) {
+  let cidadesEstado = await fs.readFile(
+    `./arquivos/cidadesPorEstado/${estado}.json`
+  );
+
+  cidadesEstado = JSON.parse(cidadesEstado);
+  let maiorNome = '';
+  //console.log(cidadesEstado);
+
+  for (const cidade of cidadesEstado) {
+    if (cidade.Nome.length > maiorNome.length) maiorNome = cidade.Nome;
+  }
+
+  return maiorNome;
+}
+
 //createFiles();
 //getQuantidadeCidades('CE');
 //getEstadosComMaisCidades('desc');
+//getMaiorNomeCidadesPorEstado('CE');
+//listaCidadesMaiorNomePorEstado();
