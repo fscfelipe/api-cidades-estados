@@ -51,42 +51,49 @@ async function getEstadosComMaisCidades(order) {
   return lista;
 }
 
-async function listaCidadesMaiorNomePorEstado() {
+async function listaCidadesMaiorNomePorEstado(maior) {
   let estados = await fs.readFile('./arquivos/Estados.json', 'utf8');
   estados = JSON.parse(estados);
 
   let lista = [];
 
   for (const estado of estados) {
-    let maiorCidade = await getMaiorNomeCidadesPorEstado(estado.Sigla);
+    let maiorCidade = await getMaiorMenorNomeCidadesPorEstado(
+      estado.Sigla,
+      maior
+    );
 
     lista.push({
       uf: estado.Sigla,
       cidade: maiorCidade,
     });
   }
-
+  console.log(lista);
   return lista;
 }
 
-async function getMaiorNomeCidadesPorEstado(estado) {
+async function getMaiorMenorNomeCidadesPorEstado(estado, maior) {
   let cidadesEstado = await fs.readFile(
     `./arquivos/cidadesPorEstado/${estado}.json`
   );
 
   cidadesEstado = JSON.parse(cidadesEstado);
-  let maiorNome = '';
+  let nomeCidade = cidadesEstado[0].Nome;
   //console.log(cidadesEstado);
 
   for (const cidade of cidadesEstado) {
-    if (cidade.Nome.length > maiorNome.length) maiorNome = cidade.Nome;
+    if (cidade.Nome.length > nomeCidade.length && maior)
+      nomeCidade = cidade.Nome;
+    else if (cidade.Nome.length < nomeCidade.length && !maior) {
+      nomeCidade = cidade.Nome;
+    }
   }
 
-  return maiorNome;
+  return nomeCidade;
 }
 
 //createFiles();
 //getQuantidadeCidades('CE');
 //getEstadosComMaisCidades('desc');
-//getMaiorNomeCidadesPorEstado('CE');
-//listaCidadesMaiorNomePorEstado();
+//getMaiorMenorNomeCidadesPorEstado('CE', true);
+//listaCidadesMaiorNomePorEstado(true);
